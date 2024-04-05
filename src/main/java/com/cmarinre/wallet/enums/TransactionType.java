@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 public enum TransactionType {
-  MONTHLY("Monthly"),
-  YEARLY("Yearly");
+  PAYMENT("Payment"),
+  SUBSCRIPTION("Subscription");
 
   private final String value;
 

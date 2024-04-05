@@ -6,12 +6,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Data
@@ -25,13 +26,12 @@ public class Transaction {
   @Column(name = "transaction_id")
   private String transactionId;
   private String clientId;
-  private OffsetDateTime transactionDate;
-  private BigDecimal amount;
-  private TransactionType transactionType;
+  private String walletId; // <-- WalletId to reference the wallet and show it easily in the frontend
+  private LocalDateTime transactionDate;
+  private Long amount;
+  private String transactionType;
   private String description;
-  private StatusType status;
-  private String fullname;
-  private String customerId;//<--- Stripe CustomerId
+  private String status;
 
 
 }
