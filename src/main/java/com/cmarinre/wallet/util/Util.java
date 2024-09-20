@@ -8,10 +8,10 @@ public class Util {
 
   public static String generateUniqueId(String text) {
     UUID id = UUID.nameUUIDFromBytes(text.getBytes());
-    String str=""+id;
-    int uid=str.hashCode();
-    String filterStr=""+uid;
-    str=filterStr.replaceAll("-", "");
+    String str = "" + id;
+    int uid = str.hashCode();
+    String filterStr = "" + uid;
+    str = filterStr.replaceAll("-", "");
     return str;
   }
 
