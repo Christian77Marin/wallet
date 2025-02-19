@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-- Java 21
+- Java 21 
 - Maven
 - PostgreSQL
 - Stripe Secret Key
