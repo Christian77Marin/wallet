@@ -1,0 +1,33 @@
+name: Complete OpenAPI Documentation
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto a la rama que prefieras
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # Cambia a la versión que necesites
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Generate OpenAPI Documentation
+      run: npm run generate-docs  # Asegúrate de tener un script en tu package.json que genere la documentación
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update OpenAPI documentation"
+        git push
