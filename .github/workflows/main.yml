@@ -56,6 +56,7 @@ jobs:
             const changedFiles = await getChangedFiles();
             const endpoints = await extractEndpoints(changedFiles);
             const response = await axios.post('https://api.openai.com/v1/responses', {
+              model: 'gpt-4o',
               prompt: \`Generate OpenAPI documentation for the following endpoints: \${endpoints.join(', ')}\`,
               max_tokens: 1500,
               temperature: 0.5,
