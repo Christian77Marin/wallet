@@ -38,7 +38,7 @@ jobs:
         async function getChangedFiles() {
           try {
             const output = execSync('git diff --name-only HEAD || git diff --name-only HEAD~1 HEAD').toString();
-            return output.split('\\n').filter(file => file.endsWith('.js') || file.endsWith('.ts'));
+            return output.split('\\n').filter(file => file.endsWith('.java'));
           } catch (error) {
             console.error('Error getting changed files:', error);
             return [];
@@ -50,7 +50,7 @@ jobs:
             const changedFiles = await getChangedFiles();
             if (changedFiles.length === 0) {
               console.log('No relevant files changed. Skipping documentation generation.');
-              return;
+              //return;
             }
             
             // Create a simple string to describe the changed files
