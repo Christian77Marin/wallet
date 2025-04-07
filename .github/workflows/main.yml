@@ -50,7 +50,7 @@ jobs:
             const changedFiles = await getChangedFiles();
             if (changedFiles.length === 0) {
               console.log('No relevant files changed. Skipping documentation generation.');
-              //return;
+              return;
             }
             
             // Create a simple string to describe the changed files
@@ -59,16 +59,14 @@ jobs:
             
             const response = await axios.post('https://api.openai.com/v1/responses', {
               model: 'gpt-4o',
-              input: [
-                {
-                  role: 'system',
-                  content: 'You are a helpful assistant that generates OpenAPI documentation.'
-                },
-                {
-                  role: 'user',
-                  content: 'Generate OpenAPI documentation (YAML format) based on the following information about changed endpoints: ' + filesStr
+              text: {
+                format: {
+                  type: 'text'
                 }
-              ]
+              },
+              prompt: 'Generate OpenAPI documentation (YAML format) based on the following information about changed endpoints: ' + filesStr,
+              max_tokens: 1500,
+              temperature: 0.5,
             }, {
               headers: {
                 'Authorization': 'Bearer ' + apiKey,
@@ -76,12 +74,18 @@ jobs:
               }
             });
 
-            // Assuming the response structure for chat completions
-            if (response.data.choices && response.data.choices.length > 0 && response.data.choices[0].message) {
-              fs.writeFileSync('openapi.yaml', response.data.choices[0].message.content);
+            // Handle the new response structure
+            if (response.data && 
+                response.data.output && 
+                response.data.output.length > 0 && 
+                response.data.output[0].content && 
+                response.data.output[0].content.length > 0) {
+              
+              const generatedText = response.data.output[0].content[0].text;
+              fs.writeFileSync('openapi.yaml', generatedText);
               console.log('OpenAPI documentation generated successfully.');
             } else {
-              console.error('Unexpected response format from OpenAI API:', response.data);
+              console.error('Unexpected response format from OpenAI API:', JSON.stringify(response.data, null, 2));
             }
           } catch (error) {
             console.error('Error generating OpenAPI documentation:');
