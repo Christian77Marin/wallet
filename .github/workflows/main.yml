@@ -1,4 +1,4 @@
-name: Complete OpenAPI Documentation
+name: Generate OpenAPI Documentation
 
 on:
   push:
@@ -18,16 +18,41 @@ jobs:
       with:
         node-version: '14'  # Cambia a la versión que necesites
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install Axios
+      run: npm install axios
 
     - name: Generate OpenAPI Documentation
-      run: npm run generate-docs  # Asegúrate de tener un script en tu package.json que genere la documentación
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        node -e "
+        const axios = require('axios');
+        const fs = require('fs');
+        async function generateDocs() {
+          try {
+            const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+              prompt: 'Generate OpenAPI documentation for the following endpoints: ...', // Aquí describe tus endpoints
+              max_tokens: 1500,
+              temperature: 0.5,
+            }, {
+              headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+              }
+            });
+            fs.writeFileSync('openapi.yaml', response.data.choices[0].text);
+            console.log('OpenAPI documentation generated successfully.');
+          } catch (error) {
+            console.error('Error generating OpenAPI documentation:', error);
+          }
+        }
+        generateDocs();
+        "
 
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add .
+        git add openapi.yaml
         git commit -m "Update OpenAPI documentation"
         git push
