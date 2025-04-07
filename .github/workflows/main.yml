@@ -50,14 +50,14 @@ jobs:
             const changedFiles = await getChangedFiles();
             if (changedFiles.length === 0) {
               console.log('No relevant files changed. Skipping documentation generation.');
-              return;
+              //return;
             }
             
             // Create a simple string to describe the changed files
             const filesStr = changedFiles.join(', ');
             console.log('Files changed:', filesStr);
             
-            const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            const response = await axios.post('https://api.openai.com/v1/responses', {
               model: 'gpt-4o',
               messages: [
                 {
