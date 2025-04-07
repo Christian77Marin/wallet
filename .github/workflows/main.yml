@@ -64,9 +64,7 @@ jobs:
                   type: 'text'
                 }
               },
-              prompt: 'Generate OpenAPI documentation (YAML format) based on the following information about changed endpoints: ' + filesStr,
-              max_tokens: 1500,
-              temperature: 0.5,
+              input: 'Generate OpenAPI documentation (YAML format) based on the following information about changed endpoints: ' + filesStr
             }, {
               headers: {
                 'Authorization': 'Bearer ' + apiKey,
