@@ -6,7 +6,7 @@
 
 - Java 21 
 - Maven
-- PostgreSQL
+- PostgreSQL 
 - Stripe Secret Key
 
 **1. Clone the repository:**
