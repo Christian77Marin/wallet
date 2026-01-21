@@ -9,7 +9,7 @@
 - PostgreSQL 
 - Stripe Secret Key
 
-**1. Clone the repository:**
+**1. Clone the repository:** 
 ```shell
 git clone https://github.com/Christian77Marin/wallet.git
 ```
